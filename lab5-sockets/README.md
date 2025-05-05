@@ -1,60 +1,90 @@
 # Laboratorijska vježba 5 – Socket programiranje
 
-Ova vježba prikazuje osnovne primjere komunikacije putem mreže korištenjem Pythonovog `socket` modula. Implementirani su jednostavni serveri i klijenti koji međusobno komuniciraju putem TCP protokola.
+Ova vježba prikazuje primjere komunikacije putem mreže korištenjem Pythonovog `socket` modula. Implementirani su:
+
+- Echo server i echo klijent (jedan-na-jedan komunikacija)
+- Chat server i chat klijent (višekorisnička komunikacija)
 
 ## Kako pokrenuti servere i klijente
 
-### 1. Pokretanje servera
+### 1. Echo Server i Echo Klijent
 
-U terminalu, navigirajte do direktorija `lab5-sockets` i pokrenite server:
-
-```bash
-python3 server.py
-```
-
-Server će se pokrenuti i čekati dolazne veze na definiranom portu (npr. 5000).
-
-### 2. Pokretanje klijenta
-
-U drugom terminalu, također navigirajte do direktorija `lab5-sockets` i pokrenite klijenta:
+**Pokretanje Echo servera:**
 
 ```bash
-python3 client.py
+python3 echo_server.py
 ```
 
-Klijent će se pokušati povezati na server i omogućiti unos poruka koje će se slati serveru.
+Server će se pokrenuti na `localhost:65432` i čekati dolazne veze.
 
-> **Napomena:** Prije pokretanja klijenta, osigurajte da je server već pokrenut kako bi veza mogla biti uspostavljena.
+**Pokretanje Echo klijenta:**
+
+U drugom terminalu:
+
+```bash
+python3 echo_client.py
+```
+
+Klijent se povezuje na server, šalje tekstualnu poruku i prima istu poruku natrag (echo mehanizam).
+
+### 2. Chat Server i Chat Klijent
+
+**Pokretanje Chat servera:**
+
+```bash
+python3 chat_server.py
+```
+
+Chat server se pokreće na `localhost:65433` i podržava više klijenata istovremeno.
+
+**Pokretanje Chat klijenta:**
+
+U drugom (ili više) terminala:
+
+```bash
+python3 chat_client.py
+```
+
+Klijent unosi korisničko ime, a zatim može slati poruke koje svi povezani korisnici vide.
 
 ## Primjeri izlaza iz programa
 
-### Server
-
-Nakon pokretanja servera i uspostavljanja veze s klijentom, izlaz može izgledati ovako:
+### Echo server
 
 ```
-Server pokrenut. Čeka veze...
-Povezan s: ('127.0.0.1', 54321)
-Primljeno od klijenta: Pozdrav, servere!
-Poslano klijentu: Poruka primljena.
+[SERVER] Listening on localhost:65432
+[NEW] Connection from ('127.0.0.1', 54321)
+[RECV from ('127.0.0.1', 54321)] Bok!
 ```
 
-### Klijent
-
-Nakon pokretanja klijenta i slanja poruke serveru, izlaz može izgledati ovako:
+### Echo klijent
 
 ```
-Povezan sa serverom na 127.0.0.1:5000
-Unesite poruku: Pozdrav, servere!
-Odgovor servera: Poruka primljena.
+Unesite poruku: Bok!
+Odgovor servera: Bok!
+```
+
+### Chat server
+
+```
+[CHAT SERVER] Listening on localhost:65433
+[NEW] Connection from ('127.0.0.1', 54322)
+[LOGIN] Ivan from ('127.0.0.1', 54322)
+Ivan: Pozdrav svima!
+```
+
+### Chat klijent
+
+```
+Unesite korisničko ime: Ivan
+Chat započet. Koristite Ctrl+C za izlaz.
+> Pozdrav svima!
 ```
 
 ## Sadržaj projekta
 
-- **server.py** – TCP server koji prima poruke i odgovara na njih.
-- **client.py** – Klijent koji šalje poruke serveru i prima odgovor.
-
-## Napomena
-
-Kod pokretanja skripti uvjerite se da imate instaliran Python 3 i da se nalazite u odgovarajućem direktoriju.
+- `echo_server.py` – jednostavan TCP echo server
+- `echo_client.py` – klijent koji šalje poruku i prima je natrag
+- `chat_server.py` – višenitni server za višekorisnički chat
+- `chat_client.py` – klijent koji se pridružuje chatu i komunicira s ostalima
 
